@@ -44,7 +44,7 @@ public class ClassExecutorController {
                 new BufferedOutputStream(new FileOutputStream(file));
         stream.write(bytes);
         stream.close();
-        List<String> commands = Arrays.asList("cmd", "/c", "D:\\com\\haha.bat");
+        List<String> commands = Arrays.asList("cmd", "/c", "D:\\com\\compile.bat");
 // or Arrays.asList("/bin/sh", "yourScript.sh");
 
         String output = new ProcessExecutor()
