@@ -1,0 +1,29 @@
+spring:
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        hbm2ddl.auto: update
+  datasource:
+    url: jdbc:postgresql://localhost:5432/mm?useUnicode=true&serverTimezone=Europe/Moscow&useSSL=false
+    username: postgres
+    password:
+    driverClassName: org.postgresql.Driver
+  mvc:
+    servlet:
+      path: /api
+server:
+  port: 8080
+
+logging:
+  level:
+    ROOT: ERROR
+    org.springframework: INFO
+    org.springframework.data: TRACE
+  file:
+    name: spring-boot-logger-log4j2.log
+    path: /logs/
