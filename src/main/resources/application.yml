@@ -19,11 +19,3 @@ spring:
 server:
   port: 8080
 
-logging:
-  level:
-    ROOT: ERROR
-    org.springframework: INFO
-    org.springframework.data: TRACE
-  file:
-    name: spring-boot-logger-log4j2.log
-    path: /logs/

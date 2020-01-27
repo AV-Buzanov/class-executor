@@ -19,7 +19,7 @@ import java.lang.reflect.Field;
  */
 
 @RestController
-@RequestMapping(value = "/account")
+@RequestMapping(value = "/file")
 public class ClassExecutorController {
 
     @PostMapping(value = "/loadMainClass")
@@ -58,7 +58,7 @@ public class ClassExecutorController {
         stream.write(bytes);
         stream.close();
 
-        return ResponseEntity.ok("Вам не удалось загрузить потому что файл пустой.");
+        return ResponseEntity.ok("Файл успешно загружен");
 
     }
 }
