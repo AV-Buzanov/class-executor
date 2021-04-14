@@ -1,9 +1,11 @@
 package org.example.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.zeroturnaround.exec.ProcessExecutor;
+import org.zeroturnaround.exec.ProcessOutput;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -19,18 +21,25 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/java")
+@Slf4j
 public class ClassExecutorController {
 
     private String compileFile(final File file,
                                final InputStream inputStream,
                                final String[] args) throws Exception {
+        log.debug("compileFile({})", file.getName());
         final List<String> compileCommand = Arrays.asList("cmd", "/c",
-                "\"C:\\Program Files\\Java\\jdk1.8.0_192\\bin\\javac.exe\" " + file.getPath());
+                "\"" + System.getProperty("java.home").concat("\\bin\\javac.exe\" ")
+                        + file.getPath());
+
+        log.debug("Compile command: {}", compileCommand);
 
         List<String> execCommand = new ArrayList<String>(Arrays.asList("cmd", "/c"
                 , "java", "-classpath", file.getParent()
                 , file.getName().replace(".java", "")));
         execCommand.addAll(Arrays.asList(args));
+
+        log.debug("Exec command: {}", execCommand);
 
         final String compileOutput = new ProcessExecutor()
                 .timeout(10000, TimeUnit.MILLISECONDS)
@@ -39,6 +48,8 @@ public class ClassExecutorController {
                 .execute()
                 .outputString();
 
+        log.info("Compile output: " + compileOutput);
+
         final String execOutput = new ProcessExecutor()
                 .timeout(10000, TimeUnit.MILLISECONDS)
                 .command(execCommand)
@@ -46,17 +57,33 @@ public class ClassExecutorController {
                 .readOutput(true)
                 .execute()
                 .outputString();
-        return compileOutput.concat(execOutput);
+
+        log.debug("Exec output: " + execOutput);
+        return compileOutput.concat("\n").concat(execOutput);
     }
 
     @PostMapping(value = "/compile", consumes = MediaType.TEXT_PLAIN_VALUE)
     public String compileString(@RequestHeader("args") String[] args,
                                 @RequestHeader("input") String[] input,
-                                @RequestHeader("classname") String classname,
+//                                @RequestHeader("classname") String classname,
                                 @RequestBody String code) throws Exception {
+
         if (code == null)
             throw new NullPointerException("Файл пустой");
-        final File file = new File(System.getProperty("user.home") +
+
+        String classname = "";
+        String[] s1 = code.split(" ");
+        for (int i = 0; i < s1.length; i++) {
+            if ("class".equals(s1[i]) && i + 1 < s1.length) {
+                classname = s1[i + 1];
+                break;
+            }
+        }
+        if (classname.isEmpty()) {
+            throw new NullPointerException("Нет объявления класса в коде");
+        }
+
+        final File file = new File(System.getProperty("java.io.tmpdir") +
                 System.getProperty("file.separator") +
                 UUID.randomUUID().toString() +
                 System.getProperty("file.separator") +
@@ -64,10 +91,9 @@ public class ClassExecutorController {
         FileUtils.forceMkdirParent(file);
         if (!file.exists())
             file.createNewFile();
-        byte[] bytes = code.getBytes();
         try (BufferedOutputStream stream = new BufferedOutputStream
                 (new FileOutputStream(file))) {
-            stream.write(bytes);
+            stream.write(code.getBytes());
         }
         final String str = Arrays
                 .stream(input)
