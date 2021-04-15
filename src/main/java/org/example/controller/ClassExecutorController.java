@@ -23,6 +23,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ClassExecutorController {
 
+    private static final String TEMPLATE_TO_CLEAR = "Picked up JAVA_TOOL_OPTIONS: -Xmx300m -Xss512k -XX:CICompilerCount=2 -Dfile.encoding=UTF-8";
+
     private String compileFile(final File file,
                                final InputStream inputStream,
                                final String[] args) throws Exception {
@@ -45,6 +47,7 @@ public class ClassExecutorController {
         List<String> execCommand = new ArrayList<String>(Arrays.asList(
                 "java", "-classpath", file.getParent()
                 , file.getName().replace(".java", "")));
+        execCommand.addAll(Arrays.asList(args));
 
         log.info("Exec command: {}", execCommand);
 
@@ -68,7 +71,12 @@ public class ClassExecutorController {
                 .outputString();
 
         log.info("Exec output: " + execOutput);
-        return compileOutput.concat("\n").concat(execOutput);
+        StringBuilder builder = new StringBuilder();
+        builder.append(compileOutput.replace(TEMPLATE_TO_CLEAR, ""))
+                .append("\n")
+                .append(execOutput.replace(TEMPLATE_TO_CLEAR, ""));
+
+        return builder.toString();
     }
 
     @PostMapping(value = "/compile", consumes = MediaType.TEXT_PLAIN_VALUE)
