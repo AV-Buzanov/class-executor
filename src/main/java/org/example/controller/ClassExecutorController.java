@@ -5,7 +5,6 @@ import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.zeroturnaround.exec.ProcessExecutor;
-import org.zeroturnaround.exec.ProcessOutput;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -63,8 +62,8 @@ public class ClassExecutorController {
     }
 
     @PostMapping(value = "/compile", consumes = MediaType.TEXT_PLAIN_VALUE)
-    public String compileString(@RequestHeader("args") String[] args,
-                                @RequestHeader("input") String[] input,
+    public String compileString(@RequestHeader(value = "args", required = false, defaultValue = "{}") String[] args,
+                                @RequestHeader(value = "input", required = false, defaultValue = "{}") String[] input,
 //                                @RequestHeader("classname") String classname,
                                 @RequestBody String code) throws Exception {
 

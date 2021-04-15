@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Messenger</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script>
+        window.onload = function () {
+            document.getElementById("send").onclick = function fun() {
+                var body = document.forms["myForm"]["code"].value;
+                var input = document.forms["myForm"]["input"].value;
+                var args = document.forms["myForm"]["args"].value;
+
+                const inputRows = input.split(/\r\n|\r|\n/g);
+                const argsRows = args.split(/\r\n|\r|\n/g);
+
+                if (body == "") {
+                    alert("Нельзя отправить пустое сообщение!");
+                } else {
+                    var url = "http://localhost:8080/api/java/compile";
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', url, true);
+                    xhr.setRequestHeader("Origin", "localhost");
+                    xhr.setRequestHeader("Content-type", "text/plain");
+
+                    function iterateInput(item, index) {
+                        console.log(item);
+                        xhr.setRequestHeader("input", item);
+                    }
+
+                    function iterateArgs(item, index) {
+                        console.log(item);
+                        xhr.setRequestHeader("args", item);
+                    }
+
+                    inputRows.forEach(iterateInput);
+                    argsRows.forEach(iterateArgs);
+
+                    xhr.send(body);
+                    xhr.onreadystatechange = function processRequest(e) {
+                        if (xhr.readyState == XMLHttpRequest.DONE) {
+                            if (xhr.status != 200 && xhr.response == "")
+                                alert("Сервер не отвечает");
+                            else
+                                alert(xhr.response);
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="container" style="text-align: left;width: 50%;float: contour;padding: 15px;margin: 0 auto;">
+    <form name="myForm">
+        <label for="message">Поле ввода:</label>
+        <textarea class="form-control" id="code" name="code" rows="15" cols="70"
+                  placeholder="Код"></textarea>
+        <br>
+        <textarea class="form-control" id="input" name="input" rows="3" cols="70"
+                  placeholder="Входной поток"></textarea>
+        <br>
+        <textarea class="form-control" id="args" name="args" rows="3" cols="70"
+                  placeholder="Аргументы"></textarea>
+        <br>
+        <button type="button" id="send" class="btn btn-primary btn-lg">Отправить</button>
+    </form>
+</div>
+</body>
+</html>

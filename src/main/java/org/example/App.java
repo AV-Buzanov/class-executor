@@ -12,6 +12,7 @@ public class App
     public static void main( String[] args )
     {
         SpringApplication.run(App.class, args);
-        System.getProperties().entrySet().forEach(System.out::println);
+
+//        System.getProperties().entrySet().forEach(System.out::println);
     }
 }
