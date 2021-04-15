@@ -18,7 +18,7 @@
                 if (body == "") {
                     alert("Нельзя отправить пустое сообщение!");
                 } else {
-                    var url = "http://localhost:8080/api/java/compile";
+                    var url = "http://class-executor.herokuapp.com/api/java/compile";
                     var xhr = new XMLHttpRequest();
                     xhr.open('POST', url, true);
                     xhr.setRequestHeader("Origin", "localhost");
