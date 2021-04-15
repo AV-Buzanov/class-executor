@@ -32,8 +32,7 @@ public class ClassExecutorController {
 //                        + file.getPath());
 
         final List<String> compileCommand = Arrays.asList(
-                 System.getProperty("java.home").concat("/bin/javac.exe")
-                        , "--version");
+                 "java", "--version");
 
         log.info("Compile command: {}", compileCommand);
 //
