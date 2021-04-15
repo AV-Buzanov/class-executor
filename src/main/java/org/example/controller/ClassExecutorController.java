@@ -31,7 +31,7 @@ public class ClassExecutorController {
 //                "\"" + System.getProperty("java.home").concat("\\bin\\javac.exe\" ")
 //                        + file.getPath());
 
-        final List<String> compileCommand = Arrays.asList("sh",
+        final List<String> compileCommand = Arrays.asList(
                  System.getProperty("java.home").concat("/bin/javac.exe")
                         , "--version");
 
@@ -43,14 +43,15 @@ public class ClassExecutorController {
 //        execCommand.addAll(Arrays.asList(args));
 
 
-        List<String> execCommand = new ArrayList<String>(Arrays.asList("sh"
-                , "java", "--version"));
+        List<String> execCommand = new ArrayList<String>(Arrays.asList(
+                 "java", "--version"));
 
         log.info("Exec command: {}", execCommand);
 
         final String compileOutput = new ProcessExecutor()
                 .timeout(10000, TimeUnit.MILLISECONDS)
                 .command(compileCommand)
+                .destroyOnExit()
                 .readOutput(true)
                 .execute()
                 .outputString();
@@ -60,6 +61,7 @@ public class ClassExecutorController {
         final String execOutput = new ProcessExecutor()
                 .timeout(10000, TimeUnit.MILLISECONDS)
                 .command(execCommand)
+                .destroyOnExit()
                 .redirectInput(inputStream)
                 .readOutput(true)
                 .execute()
