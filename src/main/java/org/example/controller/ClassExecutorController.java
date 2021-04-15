@@ -29,20 +29,10 @@ public class ClassExecutorController {
                                final InputStream inputStream,
                                final String[] args) throws Exception {
         log.info("compileFile({})", file.getName());
-//        final List<String> compileCommand = Arrays.asList("cmd", "/c",
-//                "\"" + System.getProperty("java.home").concat("\\bin\\javac.exe\" ")
-//                        + file.getPath());
-
         final List<String> compileCommand = Arrays.asList(
                 "javac", file.getPath());
 
         log.info("Compile command: {}", compileCommand);
-//
-//        List<String> execCommand = new ArrayList<String>(Arrays.asList("sh"
-//                , "java", "-classpath", file.getParent()
-//                , file.getName().replace(".java", "")));
-//        execCommand.addAll(Arrays.asList(args));
-
 
         List<String> execCommand = new ArrayList<String>(Arrays.asList(
                 "java", "-classpath", file.getParent()
@@ -82,7 +72,6 @@ public class ClassExecutorController {
     @PostMapping(value = "/compile", consumes = MediaType.TEXT_PLAIN_VALUE)
     public String compileString(@RequestHeader(value = "args", required = false, defaultValue = "{}") String[] args,
                                 @RequestHeader(value = "input", required = false, defaultValue = "{}") String[] input,
-//                                @RequestHeader("classname") String classname,
                                 @RequestBody String code) throws Exception {
 
         if (code == null)
@@ -92,7 +81,8 @@ public class ClassExecutorController {
         String[] s1 = code.split(" ");
         for (int i = 0; i < s1.length; i++) {
             if ("class".equals(s1[i]) && i + 1 < s1.length) {
-                classname = s1[i + 1].split('{')[0];
+
+                classname = s1[i + 1].split("[{]")[0];
                 break;
             }
         }
