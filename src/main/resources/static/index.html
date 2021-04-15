@@ -18,10 +18,10 @@
                 if (body == "") {
                     alert("Нельзя отправить пустое сообщение!");
                 } else {
-                    var url = "http://class-executor.herokuapp.com/api/java/compile";
+                    var url = "https://class-executor.herokuapp.com/api/java/compile";
                     var xhr = new XMLHttpRequest();
                     xhr.open('POST', url, true);
-                    xhr.setRequestHeader("Origin", "localhost");
+                    xhr.setRequestHeader("Origin", "class-executor.herokuapp.com");
                     xhr.setRequestHeader("Content-type", "text/plain");
 
                     function iterateInput(item, index) {

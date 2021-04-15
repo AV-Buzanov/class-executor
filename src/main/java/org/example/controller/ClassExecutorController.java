@@ -32,7 +32,7 @@ public class ClassExecutorController {
 //                        + file.getPath());
 
         final List<String> compileCommand = Arrays.asList(
-                 "java", "-version");
+                "javac", "file.getPath()");
 
         log.info("Compile command: {}", compileCommand);
 //
@@ -43,7 +43,8 @@ public class ClassExecutorController {
 
 
         List<String> execCommand = new ArrayList<String>(Arrays.asList(
-                 "javac", "--version"));
+                "java", "-classpath", file.getParent()
+                , file.getName().replace(".java", "")));
 
         log.info("Exec command: {}", execCommand);
 
