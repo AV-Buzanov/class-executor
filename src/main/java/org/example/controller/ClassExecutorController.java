@@ -92,7 +92,7 @@ public class ClassExecutorController {
         String[] s1 = code.split(" ");
         for (int i = 0; i < s1.length; i++) {
             if ("class".equals(s1[i]) && i + 1 < s1.length) {
-                classname = s1[i + 1];
+                classname = s1[i + 1].split("{")[0];
                 break;
             }
         }
