@@ -32,7 +32,7 @@ public class ClassExecutorController {
 //                        + file.getPath());
 
         final List<String> compileCommand = Arrays.asList(
-                "javac", "file.getPath()");
+                "javac", file.getPath());
 
         log.info("Compile command: {}", compileCommand);
 //
