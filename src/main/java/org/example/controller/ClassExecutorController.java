@@ -26,19 +26,23 @@ public class ClassExecutorController {
     private String compileFile(final File file,
                                final InputStream inputStream,
                                final String[] args) throws Exception {
-        log.debug("compileFile({})", file.getName());
-        final List<String> compileCommand = Arrays.asList("cmd", "/c",
-                "\"" + System.getProperty("java.home").concat("\\bin\\javac.exe\" ")
+        log.info("compileFile({})", file.getName());
+//        final List<String> compileCommand = Arrays.asList("cmd", "/c",
+//                "\"" + System.getProperty("java.home").concat("\\bin\\javac.exe\" ")
+//                        + file.getPath());
+
+        final List<String> compileCommand = Arrays.asList("sh",
+                 System.getProperty("java.home").concat("/bin/javac.exe")
                         + file.getPath());
 
-        log.debug("Compile command: {}", compileCommand);
+        log.info("Compile command: {}", compileCommand);
 
-        List<String> execCommand = new ArrayList<String>(Arrays.asList("cmd", "/c"
+        List<String> execCommand = new ArrayList<String>(Arrays.asList("sh"
                 , "java", "-classpath", file.getParent()
                 , file.getName().replace(".java", "")));
         execCommand.addAll(Arrays.asList(args));
 
-        log.debug("Exec command: {}", execCommand);
+        log.info("Exec command: {}", execCommand);
 
         final String compileOutput = new ProcessExecutor()
                 .timeout(10000, TimeUnit.MILLISECONDS)
@@ -57,7 +61,7 @@ public class ClassExecutorController {
                 .execute()
                 .outputString();
 
-        log.debug("Exec output: " + execOutput);
+        log.info("Exec output: " + execOutput);
         return compileOutput.concat("\n").concat(execOutput);
     }
 
