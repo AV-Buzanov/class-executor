@@ -33,14 +33,18 @@ public class ClassExecutorController {
 
         final List<String> compileCommand = Arrays.asList("sh",
                  System.getProperty("java.home").concat("/bin/javac.exe")
-                        + file.getPath());
+                        , "--version");
 
         log.info("Compile command: {}", compileCommand);
+//
+//        List<String> execCommand = new ArrayList<String>(Arrays.asList("sh"
+//                , "java", "-classpath", file.getParent()
+//                , file.getName().replace(".java", "")));
+//        execCommand.addAll(Arrays.asList(args));
+
 
         List<String> execCommand = new ArrayList<String>(Arrays.asList("sh"
-                , "java", "-classpath", file.getParent()
-                , file.getName().replace(".java", "")));
-        execCommand.addAll(Arrays.asList(args));
+                , "java", "--version"));
 
         log.info("Exec command: {}", execCommand);
 
