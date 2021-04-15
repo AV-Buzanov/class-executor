@@ -72,17 +72,23 @@
 <body>
 <div class="container" style="text-align: left;width: 50%;float: contour;padding: 15px;margin: 0 auto;">
     <form name="myForm">
-        <label for="message">Поле ввода:</label>
-        <textarea class="form-control" id="code" name="code" rows="15" cols="70"
+        <label for="code">Java код (с импортами и объявлением класса):</label>
+        <textarea class="form-control" id="code" name="code" rows="15" cols="100"
                   placeholder="Код"></textarea>
         <br>
-        <textarea class="form-control" id="input" name="input" rows="3" cols="70"
+        <label for="input">Данные в System.in:</label>
+
+        <textarea class="form-control" id="input" name="input" rows="3" cols="100"
                   placeholder="Входной поток"></textarea>
         <br>
-        <textarea class="form-control" id="args" name="args" rows="3" cols="70"
+        <label for="args">Аргументы (args):</label>
+
+        <textarea class="form-control" id="args" name="args" rows="3" cols="100"
                   placeholder="Аргументы"></textarea>
         <br>
-        <textarea class="form-control" id="answer" name="answer" rows="5" cols="70" readonly
+        <label for="answer">Вывод консоли: </label>
+
+        <textarea class="form-control" id="answer" name="answer" rows="5" cols="100" readonly
                   placeholder="Ответ"></textarea>
         <br>
         <button type="button" id="send" class="btn btn-primary btn-lg">Отправить</button>
