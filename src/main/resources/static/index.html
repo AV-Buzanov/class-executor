@@ -5,12 +5,21 @@
     <title>Java class executor</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
     <script>
         window.onload = function () {
+            document.forms["myForm"]["code"].value = "public class Main { \n" +
+                    "\t public static void main(String[] args){ \n"+
+                    " \t //type your code here \n"+
+                    "\t } \n }";
+
             document.getElementById("send").onclick = function fun() {
+                var url = "http://" + document.location.host + "/api/java/compile";
+                var loading = document.getElementById("loading");
                 var body = document.forms["myForm"]["code"].value;
                 var input = document.forms["myForm"]["input"].value;
                 var args = document.forms["myForm"]["args"].value;
+                var answerForm = document.forms["myForm"]["answer"];
 
                 const inputRows = input.split(/\r\n|\r|\n/g);
                 const argsRows = args.split(/\r\n|\r|\n/g);
@@ -18,10 +27,12 @@
                 if (body == "") {
                     alert("Нельзя отправить пустое сообщение!");
                 } else {
-                    var url = "https://class-executor.herokuapp.com/api/java/compile";
+                    loading.hidden = false;
+                    answerForm.innerHTML = "";
+
                     var xhr = new XMLHttpRequest();
                     xhr.open('POST', url, true);
-                    xhr.setRequestHeader("Origin", "class-executor.herokuapp.com");
+                    xhr.setRequestHeader("Origin", document.location.hostname);
                     xhr.setRequestHeader("Content-type", "text/plain");
 
                     function iterateInput(item, index) {
@@ -38,60 +49,56 @@
                     argsRows.forEach(iterateArgs);
 
                     xhr.send(body);
-                    xhr.onprogress = function progressRequest(e){
-                        printAnswer("Выполняется...");
-                    }
-                    xhr.onreadystatechange = function processRequest(e) {
+
+                    xhr.onload = function processRequest(e) {
                         var answ;
-                        if (xhr.readyState == XMLHttpRequest.DONE) {
-                            if (xhr.status != 200 && xhr.response == "")
+                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                            if (xhr.status !== 200 && xhr.response === "")
                                 answ = "Сервер не отвечает";
                             else
                                 answ = xhr.response;
                         }
                         printAnswer(answ);
+                        loading.hidden = true;
                     }
 
                     function printAnswer(answ) {
-                        var el = document.forms["myForm"]["answer"];
-                        if (typeof el.innerText !== 'undefined') {
-                            // IE8-
-                            el.innerText = answ;
-                        } else {
-                            // Нормальные браузеры
-                            el.textContent = answ;
-                        }
+                        answerForm.innerHTML = answ;
                     }
-
-
                 }
             }
         }
     </script>
 </head>
 <body>
-<div class="container" style="text-align: left;width: 50%;float: contour;padding: 15px;margin: 0 auto;">
+<!-- Подключаем jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Подключаем Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+<div class="container" style="text-align: left;width: 65%;float: contour;padding: 15px;margin: 0 auto;">
     <form name="myForm">
         <label for="code">Java код (с импортами и объявлением класса):</label>
-        <textarea class="form-control" id="code" name="code" rows="15" cols="100"
+        <textarea class="form-control" id="code" name="code" rows="10" cols="100"
                   placeholder="Код"></textarea>
-        <br>
         <label for="input">Данные в System.in:</label>
 
         <textarea class="form-control" id="input" name="input" rows="3" cols="100"
                   placeholder="Входной поток"></textarea>
-        <br>
         <label for="args">Аргументы (args):</label>
 
         <textarea class="form-control" id="args" name="args" rows="3" cols="100"
                   placeholder="Аргументы"></textarea>
-        <br>
         <label for="answer">Вывод консоли: </label>
 
         <textarea class="form-control" id="answer" name="answer" rows="5" cols="100" readonly
+
                   placeholder="Ответ"></textarea>
         <br>
+
         <button type="button" id="send" class="btn btn-primary btn-lg">Выполнить</button>
+        <img src="loading.gif" id="loading" hidden width="45" height="45" alt="loading">
+
     </form>
 </div>
 </body>

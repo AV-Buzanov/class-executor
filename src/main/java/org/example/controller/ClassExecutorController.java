@@ -62,16 +62,18 @@ public class ClassExecutorController {
 
         log.info("Exec output: " + execOutput);
         StringBuilder builder = new StringBuilder();
-        builder.append(compileOutput.replace(TEMPLATE_TO_CLEAR, ""))
-                .append("\n")
-                .append(execOutput.replace(TEMPLATE_TO_CLEAR, ""));
+        builder.append(compileOutput.replace(TEMPLATE_TO_CLEAR, ""));
+        if (!builder.toString().isEmpty()) {
+            builder.append("\n");
+        }
+        builder.append(execOutput.replace(TEMPLATE_TO_CLEAR, ""));
 
         return builder.toString();
     }
 
     @PostMapping(value = "/compile", consumes = MediaType.TEXT_PLAIN_VALUE)
-    public String compileString(@RequestHeader(value = "args", required = false, defaultValue = "{}") String[] args,
-                                @RequestHeader(value = "input", required = false, defaultValue = "{}") String[] input,
+    public String compileString(@RequestHeader(value = "args", required = false, defaultValue = "") String[] args,
+                                @RequestHeader(value = "input", required = false, defaultValue = "") String[] input,
                                 @RequestBody String code) throws Exception {
 
         if (code == null)
