@@ -39,11 +39,21 @@
 
                     xhr.send(body);
                     xhr.onreadystatechange = function processRequest(e) {
+                        var answ;
                         if (xhr.readyState == XMLHttpRequest.DONE) {
                             if (xhr.status != 200 && xhr.response == "")
-                                alert("Сервер не отвечает");
+                                answ = "Сервер не отвечает";
                             else
-                                alert(xhr.response);
+                                answ = xhr.response;
+                        }
+
+                        var el = document.forms["myForm"]["answer"];
+                        if (typeof el.innerText !== 'undefined') {
+                            // IE8-
+                            el.innerText = answ;
+                        } else {
+                            // Нормальные браузеры
+                            el.textContent = answ;
                         }
                     }
                 }
@@ -63,6 +73,9 @@
         <br>
         <textarea class="form-control" id="args" name="args" rows="3" cols="70"
                   placeholder="Аргументы"></textarea>
+        <br>
+        <textarea class="form-control" id="answer" name="answer" rows="5" cols="70" readonly
+                  placeholder="Ответ"></textarea>
         <br>
         <button type="button" id="send" class="btn btn-primary btn-lg">Отправить</button>
     </form>
