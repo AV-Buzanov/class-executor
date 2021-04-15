@@ -2,16 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Java class executor</title>
+    <title>Java code executor</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <script>
         window.onload = function () {
             document.forms["myForm"]["code"].value = "public class Main { \n" +
-                    "\t public static void main(String[] args){ \n"+
-                    " \t //type your code here \n"+
-                    "\t } \n }";
+                "\t public static void main(String[] args){ \n" +
+                " \t //type your code here \n" +
+                "\t } \n }";
 
             document.getElementById("send").onclick = function fun() {
                 var url = "http://" + document.location.host + "/api/java/compile";
@@ -100,6 +100,11 @@
         <img src="loading.gif" id="loading" hidden width="45" height="45" alt="loading">
 
     </form>
+    <p align="center">
+        <code>
+            Created by <a href="https://github.com/AV-Buzanov" target="_blank"> AV-Buzanov</a>
+        </code>
+    </p>
 </div>
 </body>
 </html>
