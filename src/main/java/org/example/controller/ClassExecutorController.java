@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ClassExecutorController {
 
-    private static final String TEMPLATE_TO_CLEAR = "Picked up JAVA_TOOL_OPTIONS: -Xmx300m -Xss512k -XX:CICompilerCount=2 -Dfile.encoding=UTF-8";
+    private static final String TEMPLATE_TO_CLEAR = "Picked up JAVA_TOOL_OPTIONS: -Xmx300m -Xss512k -XX:CICompilerCount=2 -Dfile.encoding=UTF-8\n";
 
     private String compileFile(final File file,
                                final InputStream inputStream,
@@ -62,11 +62,11 @@ public class ClassExecutorController {
 
         log.info("Exec output: " + execOutput);
         StringBuilder builder = new StringBuilder();
-        builder.append(compileOutput.replace(TEMPLATE_TO_CLEAR, "").replace("\n","").trim());
+        builder.append(compileOutput.replace(TEMPLATE_TO_CLEAR, "").trim());
         if (!builder.toString().isEmpty()) {
             builder.append("\n");
         }
-        builder.append(execOutput.replace(TEMPLATE_TO_CLEAR, "").replace("\n","").trim());
+        builder.append(execOutput.replace(TEMPLATE_TO_CLEAR, ""));
 
         return builder.toString();
     }
