@@ -62,11 +62,11 @@ public class ClassExecutorController {
 
         log.info("Exec output: " + execOutput);
         StringBuilder builder = new StringBuilder();
-        builder.append(compileOutput.replace(TEMPLATE_TO_CLEAR, ""));
+        builder.append(compileOutput.replace(TEMPLATE_TO_CLEAR, "").replace("\n","").trim());
         if (!builder.toString().isEmpty()) {
             builder.append("\n");
         }
-        builder.append(execOutput.replace(TEMPLATE_TO_CLEAR, ""));
+        builder.append(execOutput.replace(TEMPLATE_TO_CLEAR, "").replace("\n","").trim());
 
         return builder.toString();
     }
