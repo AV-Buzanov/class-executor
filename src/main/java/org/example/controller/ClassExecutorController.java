@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ClassExecutorController {
 
-    private static final String TEMPLATE_TO_CLEAR = "Picked up JAVA_TOOL_OPTIONS: -Xmx300m -Xss512k -XX:CICompilerCount=2 -Dfile.encoding=UTF-8\n";
+    private static final String TEMPLATE_TO_CLEAR = "Picked up JAVA_TOOL_OPTIONS: -Xmx300m -Xss512k -XX:CICompilerCount=2 -Dfile.encoding=UTF-8 \n";
 
     private String compileFile(final File file,
                                final InputStream inputStream,
