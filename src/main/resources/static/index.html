@@ -14,7 +14,7 @@
                 "\t } \n }";
 
             document.getElementById("send").onclick = function fun() {
-                var url = "https://" + document.location.host + "/api/java/compile";
+                var url = "http://" + document.location.host + "/api/java/compile";
                 var loading = document.getElementById("loading");
                 var body = document.forms["myForm"]["code"].value;
                 var input = document.forms["myForm"]["input"].value;
